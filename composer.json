@@ -1,0 +1,21 @@
+{
+    "name": "ahadu/crud",
+    "description": "this package/library speeds up the making of basic CRUD's with all the related files just by providing it with the table or the migration column names and their data types",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ahadu\\Crud\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ahadu Tsegaye",
+            "email": "ahadu4321@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravel/framework": "^8.75"
+    }
+}
