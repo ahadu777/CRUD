@@ -1,6 +1,6 @@
 <?php
 
-namespace Ahadu\Crud;
+namespace ahadu\crud;
 
 use Illuminate\Support\Facades\Artisan;
 
