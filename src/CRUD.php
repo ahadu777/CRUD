@@ -29,7 +29,7 @@ class CRUD
             $fillable = $fillable . "'" . trim($value) . "',";
         }
 
-        $controllerPath = 'app/Http/Controllers/' . $name . 'Controller.php';
+        $controllerPath = base_path('app/Http/Controllers/') . $name . 'Controller.php';
         $controllerContent = '<?php
 
             namespace App\Http\Controllers;
@@ -59,7 +59,7 @@ class CRUD
             }';
 
 
-        $modelPath = 'app/Models/' . $name . '.php';
+        $modelPath = base_path('app/Models/') . $name . '.php';
         $modelContent = '<?php
         namespace App\Models;
         use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,7 +80,7 @@ class CRUD
 
 
 
-        $migrationPath = 'database/migrations/' . "2024_11_20_0000000_create_" . strtolower($name) . '_table.php';
+        $migrationPath = base_path('database/migrations/') . "2024_11_20_0000000_create_" . strtolower($name) . '_table.php';
 
         $migrationContent = '<?php
 
@@ -106,7 +106,7 @@ class Create' . $name . 'Table extends Migration
 }
 ';
 
-        $routePath = 'routes/web.php';
+        $routePath = base_path('routes/web.php');
         $routeToBeAdded = "\nRoute::resource('" . strtolower($name) . "', App\Http\Controllers\\" . $name . 'Controller::class);';
 
 
@@ -156,7 +156,7 @@ class Create' . $name . 'Table extends Migration
 
         @endsection
         ";
-        $createBladePath = 'resources/views/pages/' . $name . '-create.blade.php';
+        $createBladePath = base_path('resources/views/pages/') . $name . '-create.blade.php';
         $createBladeContent = "@extends('layouts.admin', ['activePage' => '.$name.', 'titlePage' => __('.$name.')])
 
         @section('content')
