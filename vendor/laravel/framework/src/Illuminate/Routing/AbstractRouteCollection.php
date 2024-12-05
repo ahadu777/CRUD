@@ -6,7 +6,6 @@ use ArrayIterator;
 use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use IteratorAggregate;
 use LogicException;
@@ -79,7 +78,7 @@ abstract class AbstractRouteCollection implements Countable, IteratorAggregate, 
      */
     protected function matchAgainstRoutes(array $routes, $request, $includingMethod = true)
     {
-        [$fallbacks, $routes] = (new Collection($routes))->partition(function ($route) {
+        [$fallbacks, $routes] = collect($routes)->partition(function ($route) {
             return $route->isFallback;
         });
 

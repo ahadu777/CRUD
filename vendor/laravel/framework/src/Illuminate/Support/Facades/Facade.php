@@ -5,7 +5,6 @@ namespace Illuminate\Support\Facades;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Js;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
@@ -270,7 +269,7 @@ abstract class Facade
      */
     public static function defaultAliases()
     {
-        return new Collection([
+        return collect([
             'App' => App::class,
             'Arr' => Arr::class,
             'Artisan' => Artisan::class,

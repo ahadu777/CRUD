@@ -7,7 +7,6 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\ReflectsClosures;
@@ -193,7 +192,7 @@ class EventFake implements Dispatcher, Fake
     {
         $count = count(Arr::flatten($this->events));
 
-        $eventNames = (new Collection($this->events))
+        $eventNames = collect($this->events)
             ->map(fn ($events, $eventName) => sprintf(
                 '%s dispatched %s %s',
                 $eventName,
@@ -218,12 +217,12 @@ class EventFake implements Dispatcher, Fake
     public function dispatched($event, $callback = null)
     {
         if (! $this->hasDispatched($event)) {
-            return new Collection;
+            return collect();
         }
 
         $callback = $callback ?: fn () => true;
 
-        return (new Collection($this->events[$event]))->filter(
+        return collect($this->events[$event])->filter(
             fn ($arguments) => $callback(...$arguments)
         );
     }
@@ -332,7 +331,7 @@ class EventFake implements Dispatcher, Fake
             return true;
         }
 
-        return (new Collection($this->eventsToFake))
+        return collect($this->eventsToFake)
             ->filter(function ($event) use ($eventName, $payload) {
                 return $event instanceof Closure
                             ? $event($eventName, $payload)
@@ -372,7 +371,7 @@ class EventFake implements Dispatcher, Fake
             return false;
         }
 
-        return (new Collection($this->eventsToDispatch))
+        return collect($this->eventsToDispatch)
             ->filter(function ($event) use ($eventName, $payload) {
                 return $event instanceof Closure
                     ? $event($eventName, $payload)

@@ -401,7 +401,7 @@ class Sleep
      */
     public static function assertSlept($expected, $times = 1)
     {
-        $count = (new Collection(static::$sequence))->filter($expected)->count();
+        $count = collect(static::$sequence)->filter($expected)->count();
 
         PHPUnit::assertSame(
             $times,
@@ -431,7 +431,7 @@ class Sleep
     {
         static::assertSleptTimes(count($sequence));
 
-        (new Collection($sequence))
+        collect($sequence)
             ->zip(static::$sequence)
             ->eachSpread(function (?Sleep $expected, CarbonInterval $actual) {
                 if ($expected === null) {

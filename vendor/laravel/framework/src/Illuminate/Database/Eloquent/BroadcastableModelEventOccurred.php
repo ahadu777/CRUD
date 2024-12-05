@@ -6,7 +6,6 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection as BaseCollection;
 
 class BroadcastableModelEventOccurred implements ShouldBroadcast
 {
@@ -78,7 +77,7 @@ class BroadcastableModelEventOccurred implements ShouldBroadcast
                 ? ($this->model->broadcastOn($this->event) ?: [])
                 : $this->channels;
 
-        return (new BaseCollection($channels))->map(function ($channel) {
+        return collect($channels)->map(function ($channel) {
             return $channel instanceof Model ? new PrivateChannel($channel) : $channel;
         })->all();
     }

@@ -29,7 +29,6 @@ use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Routing\Router;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Lottery;
 use Illuminate\Support\Reflector;
@@ -481,10 +480,10 @@ class Handler implements ExceptionHandlerContract
     {
         $exceptions = Arr::wrap($exceptions);
 
-        $this->dontReport = (new Collection($this->dontReport))
+        $this->dontReport = collect($this->dontReport)
                 ->reject(fn ($ignored) => in_array($ignored, $exceptions))->values()->all();
 
-        $this->internalDontReport = (new Collection($this->internalDontReport))
+        $this->internalDontReport = collect($this->internalDontReport)
                 ->reject(fn ($ignored) => in_array($ignored, $exceptions))->values()->all();
 
         return $this;
@@ -989,7 +988,7 @@ class Handler implements ExceptionHandlerContract
             'exception' => get_class($e),
             'file' => $e->getFile(),
             'line' => $e->getLine(),
-            'trace' => (new Collection($e->getTrace()))->map(fn ($trace) => Arr::except($trace, ['args']))->all(),
+            'trace' => collect($e->getTrace())->map(fn ($trace) => Arr::except($trace, ['args']))->all(),
         ] : [
             'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
         ];

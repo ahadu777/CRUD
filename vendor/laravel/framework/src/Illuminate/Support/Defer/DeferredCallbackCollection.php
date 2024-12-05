@@ -5,7 +5,6 @@ namespace Illuminate\Support\Defer;
 use ArrayAccess;
 use Closure;
 use Countable;
-use Illuminate\Support\Collection;
 
 class DeferredCallbackCollection implements ArrayAccess, Countable
 {
@@ -65,7 +64,7 @@ class DeferredCallbackCollection implements ArrayAccess, Countable
      */
     public function forget(string $name): void
     {
-        $this->callbacks = (new Collection($this->callbacks))
+        $this->callbacks = collect($this->callbacks)
             ->reject(fn ($callback) => $callback->name === $name)
             ->values()
             ->all();
@@ -78,7 +77,7 @@ class DeferredCallbackCollection implements ArrayAccess, Countable
      */
     protected function forgetDuplicates(): self
     {
-        $this->callbacks = (new Collection($this->callbacks))
+        $this->callbacks = collect($this->callbacks)
             ->reverse()
             ->unique(fn ($c) => $c->name)
             ->reverse()

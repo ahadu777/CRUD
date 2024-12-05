@@ -7,7 +7,6 @@ use Composer\Autoload\ClassLoader;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 
 class Exception
@@ -121,7 +120,7 @@ class Exception
             array_shift($trace);
         }
 
-        return new Collection(array_map(
+        return collect(array_map(
             fn (array $trace) => new Frame($this->exception, $classMap, $trace, $this->basePath), $trace,
         ));
     }

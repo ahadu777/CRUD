@@ -506,7 +506,7 @@ class BusFake implements Fake, QueueingDispatcher
      */
     public function assertNothingBatched()
     {
-        $jobNames = (new Collection($this->batches))
+        $jobNames = collect($this->batches)
             ->map(fn ($batch) => $batch->jobs->map(fn ($job) => get_class($job)))
             ->flatten()
             ->join("\n- ");
@@ -535,12 +535,12 @@ class BusFake implements Fake, QueueingDispatcher
     public function dispatched($command, $callback = null)
     {
         if (! $this->hasDispatched($command)) {
-            return new Collection;
+            return collect();
         }
 
         $callback = $callback ?: fn () => true;
 
-        return (new Collection($this->commands[$command]))->filter(fn ($command) => $callback($command));
+        return collect($this->commands[$command])->filter(fn ($command) => $callback($command));
     }
 
     /**
@@ -553,12 +553,12 @@ class BusFake implements Fake, QueueingDispatcher
     public function dispatchedSync(string $command, $callback = null)
     {
         if (! $this->hasDispatchedSync($command)) {
-            return new Collection;
+            return collect();
         }
 
         $callback = $callback ?: fn () => true;
 
-        return (new Collection($this->commandsSync[$command]))->filter(fn ($command) => $callback($command));
+        return collect($this->commandsSync[$command])->filter(fn ($command) => $callback($command));
     }
 
     /**
@@ -571,12 +571,12 @@ class BusFake implements Fake, QueueingDispatcher
     public function dispatchedAfterResponse(string $command, $callback = null)
     {
         if (! $this->hasDispatchedAfterResponse($command)) {
-            return new Collection;
+            return collect();
         }
 
         $callback = $callback ?: fn () => true;
 
-        return (new Collection($this->commandsAfterResponse[$command]))->filter(fn ($command) => $callback($command));
+        return collect($this->commandsAfterResponse[$command])->filter(fn ($command) => $callback($command));
     }
 
     /**
@@ -588,10 +588,10 @@ class BusFake implements Fake, QueueingDispatcher
     public function batched(callable $callback)
     {
         if (empty($this->batches)) {
-            return new Collection;
+            return collect();
         }
 
-        return (new Collection($this->batches))->filter(fn ($batch) => $callback($batch));
+        return collect($this->batches)->filter(fn ($batch) => $callback($batch));
     }
 
     /**
@@ -782,7 +782,7 @@ class BusFake implements Fake, QueueingDispatcher
             return true;
         }
 
-        return (new Collection($this->jobsToFake))
+        return collect($this->jobsToFake)
             ->filter(function ($job) use ($command) {
                 return $job instanceof Closure
                             ? $job($command)
@@ -798,7 +798,7 @@ class BusFake implements Fake, QueueingDispatcher
      */
     protected function shouldDispatchCommand($command)
     {
-        return (new Collection($this->jobsToDispatch))
+        return collect($this->jobsToDispatch)
             ->filter(function ($job) use ($command) {
                 return $job instanceof Closure
                     ? $job($command)

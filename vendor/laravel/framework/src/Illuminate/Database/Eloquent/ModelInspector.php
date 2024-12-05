@@ -5,7 +5,6 @@ namespace Illuminate\Database\Eloquent;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -102,7 +101,7 @@ class ModelInspector
         $columns = $schema->getColumns($table);
         $indexes = $schema->getIndexes($table);
 
-        return (new BaseCollection($columns))
+        return collect($columns)
             ->map(fn ($column) => [
                 'name' => $column['name'],
                 'type' => $column['type'],
@@ -129,7 +128,7 @@ class ModelInspector
     {
         $class = new ReflectionClass($model);
 
-        return (new BaseCollection($class->getMethods()))
+        return collect($class->getMethods())
             ->reject(
                 fn (ReflectionMethod $method) => $method->isStatic()
                     || $method->isAbstract()
@@ -144,7 +143,7 @@ class ModelInspector
                     return [];
                 }
             })
-            ->reject(fn ($cast, $name) => (new BaseCollection($columns))->contains('name', $name))
+            ->reject(fn ($cast, $name) => collect($columns)->contains('name', $name))
             ->map(fn ($cast, $name) => [
                 'name' => $name,
                 'type' => null,
@@ -168,7 +167,7 @@ class ModelInspector
      */
     protected function getRelations($model)
     {
-        return (new BaseCollection(get_class_methods($model)))
+        return collect(get_class_methods($model))
             ->map(fn ($method) => new ReflectionMethod($model, $method))
             ->reject(
                 fn (ReflectionMethod $method) => $method->isStatic()
@@ -190,7 +189,7 @@ class ModelInspector
                     $file->next();
                 }
 
-                return (new BaseCollection($this->relationMethods))
+                return collect($this->relationMethods)
                     ->contains(fn ($relationMethod) => str_contains($code, '$this->'.$relationMethod.'('));
             })
             ->map(function (ReflectionMethod $method) use ($model) {
@@ -231,7 +230,7 @@ class ModelInspector
      */
     protected function getEvents($model)
     {
-        return (new BaseCollection($model->dispatchesEvents()))
+        return collect($model->dispatchesEvents())
             ->map(fn (string $class, string $event) => [
                 'event' => $event,
                 'class' => $class,
@@ -271,7 +270,7 @@ class ModelInspector
             ];
         }
 
-        return new BaseCollection($formatted);
+        return collect($formatted);
     }
 
     /**
@@ -355,7 +354,7 @@ class ModelInspector
      */
     protected function getCastsWithDates($model)
     {
-        return (new BaseCollection($model->getDates()))
+        return collect($model->getDates())
             ->filter()
             ->flip()
             ->map(fn () => 'datetime')
@@ -405,7 +404,7 @@ class ModelInspector
      */
     protected function columnIsUnique($column, $indexes)
     {
-        return (new BaseCollection($indexes))->contains(
+        return collect($indexes)->contains(
             fn ($index) => count($index['columns']) === 1 && $index['columns'][0] === $column && $index['unique']
         );
     }

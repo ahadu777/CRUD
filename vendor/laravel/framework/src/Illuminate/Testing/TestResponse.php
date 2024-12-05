@@ -1083,7 +1083,7 @@ class TestResponse implements ArrayAccess
      */
     public function collect($key = null)
     {
-        return new Collection($this->json($key));
+        return Collection::make($this->json($key));
     }
 
     /**

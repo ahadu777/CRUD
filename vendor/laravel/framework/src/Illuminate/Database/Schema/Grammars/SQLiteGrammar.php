@@ -7,7 +7,6 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\IndexDefinition;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use RuntimeException;
 
@@ -187,7 +186,7 @@ class SQLiteGrammar extends Grammar
      */
     protected function addForeignKeys($foreignKeys)
     {
-        return (new Collection($foreignKeys))->reduce(function ($sql, $foreign) {
+        return collect($foreignKeys)->reduce(function ($sql, $foreign) {
             // Once we have all the foreign key commands for the table creation statement
             // we'll loop through each of them and add them to the create table SQL we
             // are building, since SQLite needs foreign keys on the tables creation.
@@ -269,7 +268,7 @@ class SQLiteGrammar extends Grammar
         $columnNames = [];
         $autoIncrementColumn = null;
 
-        $columns = (new Collection($blueprint->getState()->getColumns()))
+        $columns = collect($blueprint->getState()->getColumns())
             ->map(function ($column) use ($blueprint, &$columnNames, &$autoIncrementColumn) {
                 $name = $this->wrap($column);
 
@@ -287,7 +286,7 @@ class SQLiteGrammar extends Grammar
                 );
             })->all();
 
-        $indexes = (new Collection($blueprint->getState()->getIndexes()))
+        $indexes = collect($blueprint->getState()->getIndexes())
             ->reject(fn ($index) => str_starts_with('sqlite_', $index->index))
             ->map(fn ($index) => $this->{'compile'.ucfirst($index->name)}($blueprint, $index))
             ->all();
@@ -471,7 +470,7 @@ class SQLiteGrammar extends Grammar
 
         $columns = $this->prefixArray('drop column', $this->wrapArray($command->columns));
 
-        return (new Collection($columns))->map(fn ($column) => 'alter table '.$table.' '.$column)->all();
+        return collect($columns)->map(fn ($column) => 'alter table '.$table.' '.$column)->all();
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace Illuminate\Database\Schema;
 
 use Illuminate\Database\Connection;
-use Illuminate\Support\Collection;
 
 class SqliteSchemaState extends SchemaState
 {
@@ -45,7 +44,7 @@ class SqliteSchemaState extends SchemaState
             //
         ]));
 
-        $migrations = (new Collection(preg_split("/\r\n|\n|\r/", $process->getOutput())))->filter(function ($line) {
+        $migrations = collect(preg_split("/\r\n|\n|\r/", $process->getOutput()))->filter(function ($line) {
             return preg_match('/^\s*(--|INSERT\s)/iu', $line) === 1 &&
                    strlen($line) > 0;
         })->all();

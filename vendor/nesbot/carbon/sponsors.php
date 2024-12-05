@@ -45,7 +45,6 @@ function getOpenCollectiveSponsors(): string
     ];
 
     $members = json_decode(file_get_contents('https://opencollective.com/carbon/members/all.json'), true);
-    // Adding sponsors paying via other payment methods
     $members[] = [
         'MemberId' => 1,
         'createdAt' => '2019-01-01 02:00',
@@ -60,25 +59,8 @@ function getOpenCollectiveSponsors(): string
         'profile' => 'https://tidelift.com/',
         'name' => 'Tidelift',
         'description' => 'Get professional support for Carbon',
-        'image' => 'https://carbon.nesbot.com/docs/sponsors/tidelift-brand.png',
+        'image' => 'https://carbon.nesbot.com/tidelift-brand.png',
         'website' => 'https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=docs',
-    ];
-    $members[] = [
-        'MemberId' => 2,
-        'createdAt' => '2024-11-14 02:00',
-        'type' => 'ORGANIZATION',
-        'role' => 'BACKER',
-        'tier' => 'backer+ yearly',
-        'isActive' => true,
-        'totalAmountDonated' => 170,
-        'currency' => 'USD',
-        'lastTransactionAt' => '2024-11-14 02:00',
-        'lastTransactionAmount' => 170,
-        'profile' => 'https://www.slotozilla.com/nz/free-spins',
-        'name' => 'Slotozilla',
-        'description' => 'Slotozilla website',
-        'image' => 'https://carbon.nesbot.com/docs/sponsors/slotozilla.png',
-        'website' => 'https://www.slotozilla.com/nz/free-spins',
     ];
 
     $list = array_filter($members, static fn (array $member): bool => $member['totalAmountDonated'] > 3 && $member['role'] !== 'HOST' && (
@@ -99,32 +81,21 @@ function getOpenCollectiveSponsors(): string
                 ->modify($lastTransactionAt->format('H:i:s.u'));
         }
 
-        $isYearly = str_contains(strtolower($member['tier'] ?? ''), 'yearly');
-        $monthlyContribution = (float) (
-            ($isYearly && $lastTransactionAt > CarbonImmutable::parse('-1 year'))
-                ? ($member['lastTransactionAmount'] / 11.2) // 11.2 instead of 12 to include the discount for yearly subscription
-                : ($member['totalAmountDonated'] / ceil($createdAt->floatDiffInMonths()))
-        );
+        $monthlyContribution = (float) ($member['totalAmountDonated'] / ceil($createdAt->floatDiffInMonths()));
 
-        if (!$isYearly) {
-            if (
-                $lastTransactionAt->isAfter('last month') &&
-                $member['lastTransactionAmount'] > $monthlyContribution
-            ) {
-                $monthlyContribution = (float) $member['lastTransactionAmount'];
-            }
-
-            if ($lastTransactionAt->isBefore('-75 days')) {
-                $days = min(120, $lastTransactionAt->diffInDays('now') - 70);
-                $monthlyContribution *= 1 - $days / 240;
-            }
+        if (
+            $lastTransactionAt->isAfter('last month') &&
+            $member['lastTransactionAmount'] > $monthlyContribution
+        ) {
+            $monthlyContribution = (float) $member['lastTransactionAmount'];
         }
 
-        $yearlyContribution = (float) (
-            $isYearly
-                ? (12 * $monthlyContribution)
-                : ($member['totalAmountDonated'] / max(1, $createdAt->floatDiffInYears()))
-        );
+        if ($lastTransactionAt->isBefore('-75 days')) {
+            $days = min(120, $lastTransactionAt->diffInDays('now') - 70);
+            $monthlyContribution *= 1 - $days / 240;
+        }
+
+        $yearlyContribution = (float) ($member['totalAmountDonated'] / max(1, $createdAt->floatDiffInYears()));
         $status = null;
         $rank = 0;
 
@@ -187,7 +158,7 @@ function getOpenCollectiveSponsors(): string
 
         $width = min($height * 2, $validImage ? round($x * $height / $y) : $height);
 
-        if (!str_contains($href, 'utm_source') && !preg_match('/^https?:\/\/(?:www\.)?(?:onlinekasyno-polis\.pl|zonaminecraft\.net|slotozilla\.com)(\/.*)?/', $href)) {
+        if (!str_contains($href, 'utm_source') && !preg_match('/^https?:\/\/onlinekasyno-polis\.pl(\/.*)?$/', $href)) {
             $href .= (!str_contains($href, '?') ? '?' : '&amp;').'utm_source=opencollective&amp;utm_medium=github&amp;utm_campaign=Carbon';
         }
 

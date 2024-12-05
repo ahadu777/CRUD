@@ -5,7 +5,6 @@ namespace Illuminate\Foundation\Testing;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Foundation\Testing\Traits\CanConfigureMigrationCommands;
-use Illuminate\Support\Collection;
 
 trait DatabaseTruncation
 {
@@ -61,7 +60,7 @@ trait DatabaseTruncation
     {
         $database = $this->app->make('db');
 
-        (new Collection($this->connectionsToTruncate()))
+        collect($this->connectionsToTruncate())
             ->each(function ($name) use ($database) {
                 $connection = $database->connection($name);
 
@@ -84,7 +83,7 @@ trait DatabaseTruncation
 
         $connection->unsetEventDispatcher();
 
-        (new Collection(static::$allTables[$name] ??= $connection->getSchemaBuilder()->getTableListing()))
+        collect(static::$allTables[$name] ??= $connection->getSchemaBuilder()->getTableListing())
             ->when(
                 property_exists($this, 'tablesToTruncate'),
                 fn ($tables) => $tables->intersect($this->tablesToTruncate),

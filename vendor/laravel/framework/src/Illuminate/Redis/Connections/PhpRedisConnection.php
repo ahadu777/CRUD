@@ -4,7 +4,6 @@ namespace Illuminate\Redis\Connections;
 
 use Closure;
 use Illuminate\Contracts\Redis\Connection as ConnectionContract;
-use Illuminate\Support\Collection;
 use RedisException;
 
 /**
@@ -128,7 +127,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
         if (count($dictionary) === 1) {
             $dictionary = $dictionary[0];
         } else {
-            $input = new Collection($dictionary);
+            $input = collect($dictionary);
 
             $dictionary = $input->nth(2)->combine($input->nth(2, 1))->toArray();
         }

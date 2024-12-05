@@ -1,6 +1,6 @@
 {
     "name": "ahadu/crud",
-    "description": "this package/library speeds up the making of basic CRUD's with all the related files just by providing it with the table or the migration column names and their data types",
+    "description": "This package/library speeds up the making of basic CRUD's with all the related files just by providing it with the table or the migration column names and their data types.",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -13,5 +13,9 @@
             "name": "Ahadu Tsegaye",
             "email": "ahadu4321@gmail.com"
         }
-    ]
+    ],
+    "require": {
+        "laravel/framework": "*"
+    },
+    "minimum-stability": "stable"
 }

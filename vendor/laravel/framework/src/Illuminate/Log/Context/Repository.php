@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Log\Context\Events\ContextDehydrating as Dehydrating;
 use Illuminate\Log\Context\Events\ContextHydrated as Hydrated;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
@@ -368,7 +367,7 @@ class Repository
         }
 
         if ($value instanceof Closure) {
-            return (new Collection($this->data[$key]))->contains($value);
+            return collect($this->data[$key])->contains($value);
         }
 
         return in_array($value, $this->data[$key], $strict);
@@ -395,7 +394,7 @@ class Repository
         }
 
         if ($value instanceof Closure) {
-            return (new Collection($this->hidden[$key]))->contains($value);
+            return collect($this->hidden[$key])->contains($value);
         }
 
         return in_array($value, $this->hidden[$key], $strict);
@@ -547,8 +546,8 @@ class Repository
         };
 
         [$data, $hidden] = [
-            (new Collection($context['data'] ?? []))->map(fn ($value, $key) => $unserialize($value, $key, false))->all(),
-            (new Collection($context['hidden'] ?? []))->map(fn ($value, $key) => $unserialize($value, $key, true))->all(),
+            collect($context['data'] ?? [])->map(fn ($value, $key) => $unserialize($value, $key, false))->all(),
+            collect($context['hidden'] ?? [])->map(fn ($value, $key) => $unserialize($value, $key, true))->all(),
         ];
 
         $this->events->dispatch(new Hydrated(

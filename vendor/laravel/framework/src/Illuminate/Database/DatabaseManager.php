@@ -69,9 +69,7 @@ class DatabaseManager implements ConnectionResolverInterface
         $this->factory = $factory;
 
         $this->reconnector = function ($connection) {
-            $connection->setPdo(
-                $this->reconnect($connection->getNameWithReadWriteType())->getRawPdo()
-            );
+            $this->reconnect($connection->getNameWithReadWriteType());
         };
     }
 

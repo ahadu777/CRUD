@@ -53,11 +53,11 @@ trait HasEvents
         $isEloquentGrandchild = is_subclass_of(static::class, Model::class)
             && get_parent_class(static::class) !== Model::class;
 
-        return (new Collection($reflectionClass->getAttributes(ObservedBy::class)))
+        return collect($reflectionClass->getAttributes(ObservedBy::class))
             ->map(fn ($attribute) => $attribute->getArguments())
             ->flatten()
             ->when($isEloquentGrandchild, function (Collection $attributes) {
-                return (new Collection(get_parent_class(static::class)::resolveObserveAttributes()))
+                return collect(get_parent_class(static::class)::resolveObserveAttributes())
                     ->merge($attributes);
             })
             ->all();

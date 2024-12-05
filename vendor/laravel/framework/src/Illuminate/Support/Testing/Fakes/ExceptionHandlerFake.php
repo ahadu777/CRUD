@@ -5,7 +5,6 @@ namespace Illuminate\Support\Testing\Fakes;
 use Closure;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\Concerns\WithoutExceptionHandlingHandler;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\ReflectsClosures;
 use Illuminate\Testing\Assert;
@@ -81,7 +80,7 @@ class ExceptionHandlerFake implements ExceptionHandler, Fake
         }
 
         Assert::assertTrue(
-            (new Collection($this->reported))->contains(
+            collect($this->reported)->contains(
                 fn (Throwable $e) => $this->firstClosureParameterType($exception) === get_class($e)
                     && $exception($e) === true,
             ), $message,
@@ -96,7 +95,7 @@ class ExceptionHandlerFake implements ExceptionHandler, Fake
      */
     public function assertReportedCount(int $count)
     {
-        $total = (new Collection($this->reported))->count();
+        $total = collect($this->reported)->count();
 
         PHPUnit::assertSame(
             $count, $total,

@@ -5,7 +5,6 @@ namespace Illuminate\Validation\Rules;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 use function Illuminate\Support\enum_value;
 
@@ -232,7 +231,7 @@ trait DatabaseRule
      */
     protected function formatWheres()
     {
-        return (new Collection($this->wheres))->map(function ($where) {
+        return collect($this->wheres)->map(function ($where) {
             return $where['column'].','.'"'.str_replace('"', '""', $where['value']).'"';
         })->implode(',');
     }

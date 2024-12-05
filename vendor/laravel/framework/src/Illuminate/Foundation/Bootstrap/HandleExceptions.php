@@ -57,7 +57,7 @@ class HandleExceptions
         }
 
         if (laravel_cloud()) {
-            $this->configureCloudLogging($app);
+            $this->configureCloudSocketLogChannel($app);
         }
     }
 
@@ -252,28 +252,19 @@ class HandleExceptions
     }
 
     /**
-     * Configure the Laravel Cloud log channels.
+     * Configure the Laravel Cloud socket log channel.
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    protected function configureCloudLogging(Application $app)
+    protected function configureCloudSocketLogChannel(Application $app)
     {
-        $app['config']->set('logging.channels.stderr.formatter_with', [
-            'includeStacktraces' => true,
-        ]);
-
         $app['config']->set('logging.channels.laravel-cloud-socket', [
             'driver' => 'monolog',
             'handler' => SocketHandler::class,
             'formatter' => JsonFormatter::class,
-            'formatter_with' => [
-                'includeStacktraces' => true,
-            ],
             'with' => [
-                'connectionString' => $_ENV['LARAVEL_CLOUD_LOG_SOCKET'] ??
-                                      $_SERVER['LARAVEL_CLOUD_LOG_SOCKET'] ??
-                                      '127.0.0.1:8765',
+                'connectionString' => $_ENV['LARAVEL_CLOUD_LOG_SOCKET'] ?? '127.0.0.1:8765',
                 'persistent' => true,
             ],
         ]);

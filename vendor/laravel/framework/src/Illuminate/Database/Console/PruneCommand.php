@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Events\ModelPruningFinished;
 use Illuminate\Database\Events\ModelPruningStarting;
 use Illuminate\Database\Events\ModelsPruned;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -118,7 +117,7 @@ class PruneCommand extends Command
     protected function models()
     {
         if (! empty($models = $this->option('model'))) {
-            return (new Collection($models))->filter(function ($model) {
+            return collect($models)->filter(function ($model) {
                 return class_exists($model);
             })->values();
         }
@@ -129,7 +128,7 @@ class PruneCommand extends Command
             throw new InvalidArgumentException('The --models and --except options cannot be combined.');
         }
 
-        return (new Collection(Finder::create()->in($this->getPath())->files()->name('*.php')))
+        return collect(Finder::create()->in($this->getPath())->files()->name('*.php'))
             ->map(function ($model) {
                 $namespace = $this->laravel->getNamespace();
 
@@ -157,7 +156,7 @@ class PruneCommand extends Command
     protected function getPath()
     {
         if (! empty($path = $this->option('path'))) {
-            return (new Collection($path))->map(function ($path) {
+            return collect($path)->map(function ($path) {
                 return base_path($path);
             })->all();
         }

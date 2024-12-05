@@ -5,7 +5,6 @@ namespace Illuminate\Database\Console;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
 use Symfony\Component\Console\Attribute\AsCommand;
 
@@ -40,7 +39,7 @@ class TableCommand extends DatabaseInspectionCommand
     {
         $connection = $connections->connection($this->input->getOption('database'));
         $schema = $connection->getSchemaBuilder();
-        $tables = (new Collection($schema->getTables()))
+        $tables = collect($schema->getTables())
             ->keyBy(fn ($table) => $table['schema'] ? $table['schema'].'.'.$table['name'] : $table['name'])
             ->all();
 
@@ -92,7 +91,7 @@ class TableCommand extends DatabaseInspectionCommand
      */
     protected function columns(Builder $schema, string $table)
     {
-        return (new Collection($schema->getColumns($table)))->map(fn ($column) => [
+        return collect($schema->getColumns($table))->map(fn ($column) => [
             'column' => $column['name'],
             'attributes' => $this->getAttributesForColumn($column),
             'default' => $column['default'],
@@ -108,13 +107,13 @@ class TableCommand extends DatabaseInspectionCommand
      */
     protected function getAttributesForColumn($column)
     {
-        return (new Collection([
+        return collect([
             $column['type_name'],
             $column['generation'] ? $column['generation']['type'] : null,
             $column['auto_increment'] ? 'autoincrement' : null,
             $column['nullable'] ? 'nullable' : null,
             $column['collation'],
-        ]))->filter();
+        ])->filter();
     }
 
     /**
@@ -126,9 +125,9 @@ class TableCommand extends DatabaseInspectionCommand
      */
     protected function indexes(Builder $schema, string $table)
     {
-        return (new Collection($schema->getIndexes($table)))->map(fn ($index) => [
+        return collect($schema->getIndexes($table))->map(fn ($index) => [
             'name' => $index['name'],
-            'columns' => new Collection($index['columns']),
+            'columns' => collect($index['columns']),
             'attributes' => $this->getAttributesForIndex($index),
         ]);
     }
@@ -141,12 +140,12 @@ class TableCommand extends DatabaseInspectionCommand
      */
     protected function getAttributesForIndex($index)
     {
-        return (new Collection([
+        return collect([
             $index['type'],
             count($index['columns']) > 1 ? 'compound' : null,
             $index['unique'] && ! $index['primary'] ? 'unique' : null,
             $index['primary'] ? 'primary' : null,
-        ]))->filter();
+        ])->filter();
     }
 
     /**
@@ -158,12 +157,12 @@ class TableCommand extends DatabaseInspectionCommand
      */
     protected function foreignKeys(Builder $schema, string $table)
     {
-        return (new Collection($schema->getForeignKeys($table)))->map(fn ($foreignKey) => [
+        return collect($schema->getForeignKeys($table))->map(fn ($foreignKey) => [
             'name' => $foreignKey['name'],
-            'columns' => new Collection($foreignKey['columns']),
+            'columns' => collect($foreignKey['columns']),
             'foreign_schema' => $foreignKey['foreign_schema'],
             'foreign_table' => $foreignKey['foreign_table'],
-            'foreign_columns' => new Collection($foreignKey['foreign_columns']),
+            'foreign_columns' => collect($foreignKey['foreign_columns']),
             'on_update' => $foreignKey['on_update'],
             'on_delete' => $foreignKey['on_delete'],
         ]);

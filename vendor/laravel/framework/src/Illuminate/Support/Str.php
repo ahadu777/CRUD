@@ -841,10 +841,10 @@ class Str
         preg_match_all($pattern, $subject, $matches);
 
         if (empty($matches[0])) {
-            return new Collection;
+            return collect();
         }
 
-        return new Collection($matches[1] ?? $matches[0]);
+        return collect($matches[1] ?? $matches[0]);
     }
 
     /**
@@ -1128,7 +1128,7 @@ class Str
     public static function replaceArray($search, $replace, $subject)
     {
         if ($replace instanceof Traversable) {
-            $replace = (new Collection($replace))->all();
+            $replace = collect($replace)->all();
         }
 
         $segments = explode($search, $subject);
@@ -1170,15 +1170,15 @@ class Str
     public static function replace($search, $replace, $subject, $caseSensitive = true)
     {
         if ($search instanceof Traversable) {
-            $search = (new Collection($search))->all();
+            $search = collect($search)->all();
         }
 
         if ($replace instanceof Traversable) {
-            $replace = (new Collection($replace))->all();
+            $replace = collect($replace)->all();
         }
 
         if ($subject instanceof Traversable) {
-            $subject = (new Collection($subject))->all();
+            $subject = collect($subject)->all();
         }
 
         return $caseSensitive
@@ -1311,7 +1311,7 @@ class Str
     public static function remove($search, $subject, $caseSensitive = true)
     {
         if ($search instanceof Traversable) {
-            $search = (new Collection($search))->all();
+            $search = collect($search)->all();
         }
 
         return $caseSensitive

@@ -4,7 +4,6 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
 use Symfony\Component\Console\Attribute\AsCommand;
 
@@ -126,7 +125,7 @@ class ApiInstallCommand extends Command
             'laravel/sanctum:^4.0',
         ]);
 
-        $migrationPublished = (new Collection(scandir($this->laravel->databasePath('migrations'))))->contains(function ($migration) {
+        $migrationPublished = collect(scandir($this->laravel->databasePath('migrations')))->contains(function ($migration) {
             return preg_match('/\d{4}_\d{2}_\d{2}_\d{6}_create_personal_access_tokens_table.php/', $migration);
         });
 

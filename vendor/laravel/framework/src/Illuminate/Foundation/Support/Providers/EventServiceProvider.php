@@ -6,7 +6,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Events\DiscoverEvents;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -145,7 +144,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function discoverEvents()
     {
-        return (new Collection($this->discoverEventsWithin()))
+        return collect($this->discoverEventsWithin())
                     ->reject(function ($directory) {
                         return ! is_dir($directory);
                     })

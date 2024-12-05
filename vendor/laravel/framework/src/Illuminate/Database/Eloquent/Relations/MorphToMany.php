@@ -5,7 +5,6 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 
 /**
  * @template TRelatedModel of \Illuminate\Database\Eloquent\Model
@@ -161,7 +160,6 @@ class MorphToMany extends BelongsToMany
                         : MorphPivot::fromAttributes($this->parent, $attributes, $this->table, $exists);
 
         $pivot->setPivotKeys($this->foreignPivotKey, $this->relatedPivotKey)
-              ->setRelatedModel($this->related)
               ->setMorphType($this->morphType)
               ->setMorphClass($this->morphClass);
 
@@ -179,7 +177,7 @@ class MorphToMany extends BelongsToMany
     {
         $defaults = [$this->foreignPivotKey, $this->relatedPivotKey, $this->morphType];
 
-        return (new Collection(array_merge($defaults, $this->pivotColumns)))->map(function ($column) {
+        return collect(array_merge($defaults, $this->pivotColumns))->map(function ($column) {
             return $this->qualifyPivotColumn($column).' as pivot_'.$column;
         })->unique()->all();
     }

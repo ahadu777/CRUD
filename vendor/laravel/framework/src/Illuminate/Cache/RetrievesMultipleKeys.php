@@ -2,8 +2,6 @@
 
 namespace Illuminate\Cache;
 
-use Illuminate\Support\Collection;
-
 trait RetrievesMultipleKeys
 {
     /**
@@ -18,7 +16,7 @@ trait RetrievesMultipleKeys
     {
         $return = [];
 
-        $keys = (new Collection($keys))->mapWithKeys(function ($value, $key) {
+        $keys = collect($keys)->mapWithKeys(function ($value, $key) {
             return [is_string($key) ? $key : $value => is_string($key) ? $value : null];
         })->all();
 

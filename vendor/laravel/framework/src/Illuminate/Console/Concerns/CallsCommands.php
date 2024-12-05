@@ -2,7 +2,6 @@
 
 namespace Illuminate\Console\Concerns;
 
-use Illuminate\Support\Collection;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -96,7 +95,7 @@ trait CallsCommands
      */
     protected function context()
     {
-        return (new Collection($this->option()))->only([
+        return collect($this->option())->only([
             'ansi',
             'no-ansi',
             'no-interaction',

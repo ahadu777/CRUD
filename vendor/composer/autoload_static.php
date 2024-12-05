@@ -43,6 +43,10 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         array (
             'ahadu\\crud\\' => 11,
         ),
+        'W' => 
+        array (
+            'Webmozart\\Assert\\' => 17,
+        ),
         'T' => 
         array (
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
@@ -156,6 +160,10 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         'ahadu\\crud\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Webmozart\\Assert\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (

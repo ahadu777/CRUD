@@ -3,7 +3,6 @@
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
 
@@ -48,7 +47,7 @@ class ConfigPublishCommand extends Command
 
         $name = (string) (is_null($this->argument('name')) ? select(
             label: 'Which configuration file would you like to publish?',
-            options: (new Collection($config))->map(function (string $path) {
+            options: collect($config)->map(function (string $path) {
                 return basename($path, '.php');
             }),
         ) : $this->argument('name'));
@@ -102,6 +101,6 @@ class ConfigPublishCommand extends Command
                 : $file->getRealPath();
         }
 
-        return (new Collection($config))->sortKeys()->all();
+        return collect($config)->sortKeys()->all();
     }
 }

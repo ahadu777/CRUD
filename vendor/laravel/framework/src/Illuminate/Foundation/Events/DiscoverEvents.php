@@ -2,7 +2,6 @@
 
 namespace Illuminate\Foundation\Events;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -29,7 +28,7 @@ class DiscoverEvents
      */
     public static function within($listenerPath, $basePath)
     {
-        $listeners = new Collection(static::getListenerEvents(
+        $listeners = collect(static::getListenerEvents(
             Finder::create()->files()->in($listenerPath), $basePath
         ));
 

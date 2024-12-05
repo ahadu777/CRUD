@@ -2,7 +2,7 @@
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @template TRelatedModel of \Illuminate\Database\Eloquent\Model
@@ -53,7 +53,7 @@ class HasMany extends HasOneOrMany
     }
 
     /** @inheritDoc */
-    public function match(array $models, EloquentCollection $results, $relation)
+    public function match(array $models, Collection $results, $relation)
     {
         return $this->matchMany($models, $results, $relation);
     }

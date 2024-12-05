@@ -9,7 +9,6 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Grammars\Grammar;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Traits\Macroable;
 
@@ -181,7 +180,7 @@ class Blueprint
      */
     protected function commandsNamed(array $names)
     {
-        return (new Collection($this->commands))->filter(function ($command) use ($names) {
+        return collect($this->commands)->filter(function ($command) use ($names) {
             return in_array($command->name, $names);
         });
     }
@@ -327,7 +326,7 @@ class Blueprint
      */
     public function creating()
     {
-        return (new Collection($this->commands))->contains(function ($command) {
+        return collect($this->commands)->contains(function ($command) {
             return ! $command instanceof ColumnDefinition && $command->name === 'create';
         });
     }
@@ -680,7 +679,7 @@ class Blueprint
     }
 
     /**
-     * Specify a fulltext index for the table.
+     * Specify an fulltext for the table.
      *
      * @param  string|array  $columns
      * @param  string|null  $name
@@ -1039,7 +1038,7 @@ class Blueprint
 
         $column = $column ?: $model->getForeignKey();
 
-        if ($model->getKeyType() === 'int') {
+        if ($model->getKeyType() === 'int' && $model->getIncrementing()) {
             return $this->foreignId($column)
                 ->table($model->getTable())
                 ->referencesModelColumn($model->getKeyName());
@@ -1606,7 +1605,7 @@ class Blueprint
     }
 
     /**
-     * Add the `remember_token` column to the table.
+     * Adds the `remember_token` column to the table.
      *
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */

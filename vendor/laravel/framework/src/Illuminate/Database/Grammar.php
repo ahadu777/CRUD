@@ -3,7 +3,6 @@
 namespace Illuminate\Database;
 
 use Illuminate\Contracts\Database\Query\Expression;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
 
@@ -61,7 +60,7 @@ abstract class Grammar
         if (str_contains($table, '.')) {
             $table = substr_replace($table, '.'.$this->tablePrefix, strrpos($table, '.'), 1);
 
-            return (new Collection(explode('.', $table)))
+            return collect(explode('.', $table))
                 ->map($this->wrapValue(...))
                 ->implode('.');
         }
@@ -132,7 +131,7 @@ abstract class Grammar
      */
     protected function wrapSegments($segments)
     {
-        return (new Collection($segments))->map(function ($segment, $key) use ($segments) {
+        return collect($segments)->map(function ($segment, $key) use ($segments) {
             return $key == 0 && count($segments) > 1
                             ? $this->wrapTable($segment)
                             : $this->wrapValue($segment);
