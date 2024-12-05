@@ -26,7 +26,7 @@
 
 <h2>Step 4: Usage </h2>
 <p>If you use the command (make sure you have a /pages directory inside your views)</p>
-<pre><code>php artisan make:crud -name="ModelNameHere" --columns=" datatype:name "</code></pre>
+<pre><code>php artisan make:crud ModelNameHere --columns=" datatype:name,datatype:name "</code></pre>
 
 <p>If you use it in a controller</p>
 <pre><code> CRUD::make($modelName,$columnsWithTheirDataType) </code></pre>
