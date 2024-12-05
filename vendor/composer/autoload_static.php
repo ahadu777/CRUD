@@ -33,6 +33,10 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         array (
             'voku\\' => 5,
         ),
+        'a' => 
+        array (
+            'ahadu\\Crud\\' => 11,
+        ),
         'T' => 
         array (
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
@@ -124,16 +128,16 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         array (
             'Brick\\Math\\' => 11,
         ),
-        'A' => 
-        array (
-            'Ahadu\\Crud\\' => 11,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'ahadu\\Crud\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -343,10 +347,6 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
-        ),
-        'Ahadu\\Crud\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
