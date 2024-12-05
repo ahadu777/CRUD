@@ -224,12 +224,7 @@ class CrudCommand extends Command
 
         @endsection
         ";
-        $cols = $this->ask('how many colums do you want ?');
-        for ($i = 1; $i <= (int)$cols; $i++) {
-            $dataTypes = ["string=>string", "boolean=>boolean", "date=>date", "integer=>integer", "double=>double"];
-            $this->choice('type', $dataTypes);
-            $this->ask('column name');
-        }
+       
         file_put_contents($routePath, $routeToBeAdded, FILE_APPEND);
         file_put_contents($modelPath, $modelContent);
         file_put_contents($migrationPath, $migrationContent);
