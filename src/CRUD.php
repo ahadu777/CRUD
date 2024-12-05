@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class CRUD
 {
-    public function make($name, $columns)
+    public static function make($name, $columns)
     {
         $fields = explode(',', $columns);
 
@@ -111,7 +111,7 @@ class Create' . $name . 'Table extends Migration
 
 
         $numberOfFields = count(explode(',', $columns));
-        $bladePath = 'resources/views/pages/' . $name . '.blade.php';
+        $bladePath = base_path('resources/views/pages/') . $name . '.blade.php';
         $bladeContetnt = "@extends('layouts.admin', ['activePage' => '.$name.', 'titlePage' => __('.$name.')])
 
         @section('content')
