@@ -32,7 +32,7 @@
 <pre><code> CRUD::make($modelName,$columnsWithTheirDataType) </code></pre>
 
 <h2>Conclusion</h2>
-<p>After completing these steps, the Ahadu CRUD package will be ready to use in your Laravel application. If you have any questions or need further assistance, please refer to the package documentation.</p>
+<p>After completing these steps, the Ahadu CRUD package will be ready to use in your Laravel application. If you have any questions or need further assistance, please contact me with ahadu4321@gmail.com.</p>
 
 </body>
 </html>
