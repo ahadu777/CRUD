@@ -35,7 +35,7 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         ),
         'a' => 
         array (
-            'ahadu\\Crud\\' => 11,
+            'ahadu\\crud\\' => 11,
         ),
         'T' => 
         array (
@@ -135,7 +135,7 @@ class ComposerStaticInitd0048a2cfe4c60512163424144037d79
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
         ),
-        'ahadu\\Crud\\' => 
+        'ahadu\\crud\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
