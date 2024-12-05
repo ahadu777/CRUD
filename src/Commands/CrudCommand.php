@@ -1,6 +1,6 @@
 <?php
 
-namespace ahadu\crud\commands;
+namespace ahadu\crud\Commands;
 
 use Illuminate\Console\Command;
 

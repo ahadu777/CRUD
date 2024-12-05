@@ -2,8 +2,8 @@
 
 namespace ahadu\crud;
 
+use ahadu\crud\Commands\CrudCommand;
 use Illuminate\Support\ServiceProvider;
-use ahadu\crud\commands\CrudCommand;
 
 class CrudServiceProvider extends ServiceProvider
 {
