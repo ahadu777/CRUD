@@ -15,8 +15,7 @@
             "email": "ahadu4321@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
-    "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "laravel/framework": "^8.75"
     }
