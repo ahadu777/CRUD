@@ -25,7 +25,7 @@
 <pre><code>php artisan vendor:publish --provider="ahadu\crud\CrudServiceProvider"</code></pre>
 
 <h2>Step 4: Usage </h2>
-<p>If you use the command</p>
+<p>If you use the command (make sure you have a /pages directory inside your views)</p>
 <pre><code>php artisan make:crud -name="ModelNameHere" --columns=" datatype:name "</code></pre>
 
 <p>If you use it in a controller</p>
